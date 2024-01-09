@@ -1,0 +1,6 @@
+[submodule "tomato_representation"]
+	path = tomato_representation
+	url = git@github.com:IDEA-Research/Motion-X.git
+[submodule "motion_X"]
+	path = motion_X
+	url = git@github.com:IDEA-Research/Motion-X.git
