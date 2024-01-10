@@ -13,3 +13,9 @@ Done :
 To Do :
 - visualize motion data
 ----
+
+Before start, please set the environment by following command:
+```bash
+conda env create --prefix .env --file environment.yml
+conda activate ./env
+```
