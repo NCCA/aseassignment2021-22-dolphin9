@@ -1,0 +1,17 @@
+name: assignment-envrionment
+channels:
+  - pytorch
+dependencies:
+  - pytorch
+  - torchvision
+  - pip
+  - pip:
+    - torchsummary
+    - pytorch-lightning
+    - tensorboard
+    - jupyterlab
+    - numpy
+    - pandas
+    - matplotlib
+    - coverage
+    - imageio
