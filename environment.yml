@@ -14,4 +14,4 @@ dependencies:
     - pandas
     - matplotlib
     - coverage
-    - imageio
+    - imageiod
