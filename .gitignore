@@ -11,3 +11,4 @@ __pycache__/*
 temp.png
 test.ipynb
 test.py
+runs/*

@@ -96,7 +96,7 @@ class Motion:
         return motion_tensor
     
     def write_vedio(self,filename):
-        fourcc = cv.VideoWriter_fourcc(*'MP4V')
+        fourcc = cv.VideoWriter_fourcc('M','P','4','V')
         out = cv.VideoWriter(filename, fourcc, 20.0, (640,480))
         for i in range(0,self.frame_num):
             out.write(self.pose_list[i])
