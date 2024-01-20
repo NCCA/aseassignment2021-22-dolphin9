@@ -12,6 +12,7 @@ Done :
 ----
 To Do :
 - visualize motion data
+- change the dataset to Bandai
 ----
 
 Before start, please set the environment by following command:
