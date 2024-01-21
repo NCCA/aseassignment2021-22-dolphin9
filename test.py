@@ -9,5 +9,17 @@ import pydirectinput
 import math
 import cv2
 
-pydirectinput.moveTo(100, 150)
-pydirectinput.click()
+
+
+
+
+def trypydirectinput():
+    time.sleep(5)
+    pydirectinput.moveTo(200, 300)
+    pydirectinput.click()
+    pydirectinput.doubleClick()
+    pydirectinput.keyDown('a')
+
+if __name__ == "__main__":
+    t = threading.Thread(target=trypydirectinput,args=())
+    t.start()
