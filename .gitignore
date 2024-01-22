@@ -5,4 +5,4 @@ blender/*
 .env/*
 Blender/*
 AlphaPose/*
-Bandai-Namco-Research-Motiondataset/*
+.conda/*
