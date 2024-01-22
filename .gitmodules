@@ -1,6 +1,3 @@
-[submodule "motion_X"]
-	path = motion_X
-	url = git@github.com:IDEA-Research/Motion-X.git
 [submodule "Bandai-Namco-Research-Motiondataset"]
 	path = Bandai-Namco-Research-Motiondataset
 	url = git@github.com:BandaiNamcoResearchInc/Bandai-Namco-Research-Motiondataset.git
