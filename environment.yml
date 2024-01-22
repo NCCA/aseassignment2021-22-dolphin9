@@ -15,3 +15,8 @@ dependencies:
     - matplotlib
     - coverage
     - imageiod
+    - imageio
+    - pyautogui
+    - pydirectinput
+    - opencv-python
+    - pyAudio

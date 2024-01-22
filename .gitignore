@@ -2,3 +2,7 @@ datasets/*
 Downloads/*
 env/*
 blender/*
+.env/*
+Blender/*
+AlphaPose/*
+Bandai-Namco-Research-Motiondataset/*
