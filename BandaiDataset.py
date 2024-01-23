@@ -41,13 +41,13 @@ class Motion:
 
         return True
     
+    def get_pose(self, i):
+        return self.pose_list[i]
+    
     # draw certain pose in motion
     def draw_pose(self, i):
         plt.imshow(self.pose_list[i],cmap='gray')
 
-    def get_pose(self, i):
-        return self.pose_list[i]
-    
     def read_label(self,label_path):
         with open(label_path) as f:
             jsondata = json.loads(f.readline())
@@ -71,6 +71,7 @@ class BandaiDataset(Dataset):
     label_list = []
     num_of_files = 0
     max_frame = -1
+    min_frame = 10000
     video_dir = 'datasets/mp4/'
     json_dir = 'datasets/data/'
     label_dir = 'datasets/cfg/'
@@ -127,12 +128,12 @@ class BandaiDataset(Dataset):
         return self.filelist
     
     def normalize(self):
-        max_frame = -1
         for motion in self.motion_list:
-            max_frame = max(motion.frame_num,max_frame)
+            self.max_frame = max(motion.frame_num,self.max_frame)
+            self.min_frame = min(motion.frame_num,self.min_frame)
         
         for i in range(0,len(self.motion_list)):
-            self.motion_list[i].adjust(max_frame)
+            self.motion_list[i].adjust(self.max_frame)
             
         
 
