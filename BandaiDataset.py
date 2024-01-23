@@ -28,7 +28,11 @@ class Motion:
             self.pose_list.append(img)
             
         cap.release()
-        return self.pose_list
+        return self
+    
+    def draw_pose(self, i):
+        plt.imshow(self.pose_list[i],cmap='gray')
+    
 
 
 
