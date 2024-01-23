@@ -18,7 +18,7 @@ class Motion:
         self.frame_num = 0
 
     # aquire pose images from vedio using OpenCV
-    def cap_frames(self,video_dir,json_dir,filename):
+    def input_motion(self,video_dir,json_dir,filename):
         
         if filename == '':
             return False
@@ -83,6 +83,8 @@ class BandaiDataset(Dataset):
             filepath = self.list_file
         else:
             self.list_file = filepath
+
+        self.get_filenames()
         
                                     
     def __len__(self):
@@ -99,11 +101,11 @@ class BandaiDataset(Dataset):
 
         for filename in self.filelist:
             motion = Motion()
-            flag = motion.cap_frames(self.video_dir,self.json_dir,filename)
+            flag = motion.input_motion(self.video_dir,self.json_dir,filename)
             if flag:
                 self.motion_list.append(copy.deepcopy(motion))
                 print(self.motion_list[-1].frame_num)
-                self.num_of_files += 1
+                
 
     
     def get_filenames(self, filepath=''):
@@ -120,6 +122,7 @@ class BandaiDataset(Dataset):
                     content.append(line)
                     line = file.read()
                 self.filelist = content[0].split('\n')
+                self.num_of_files = len(self.filelist)
         
         return self.filelist
     
