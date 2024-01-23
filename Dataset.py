@@ -1,9 +1,24 @@
+
+import os
+import torch
+import cv2 as cv
+import numpy as np
+import pandas as pd
+from matplotlib import pyplot as plt
+
+
 class Dataset:
     
     filelist = []
-    
+    video_dir = 'datasets/mp4/'
+    json_dir = 'datasets/data/'
+    label_dir = 'datasets/cfg/'
+    list_file = 'datafiles.txt'
+
+    # 定义可以扩写：可以改变地址
     def __init__(self):
         pass
+
     
     def get_filelist(self, list_file=''):
         if list_file == '':
@@ -15,7 +30,7 @@ class Dataset:
             return filelist
         
     def cap_frames(filename):
-        cap = cv.VideoCapture(video_dir + filename +'.mp4')
+        cap = cv.VideoCapture(self.video_dir + filename +'.mp4')
         
         motion = []
         
