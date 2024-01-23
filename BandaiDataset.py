@@ -11,6 +11,7 @@ from torch.utils.data import Dataset
 class Motion:
     pose_list = []
     label = -1
+    frame_num = -1
 
     def __init__(self):
         pass
@@ -33,6 +34,7 @@ class Motion:
             self.pose_list.append(img)
             
         cap.release()
+        self.frame_num = len(self.pose_list)
 
         return self
     
@@ -47,6 +49,15 @@ class Motion:
         with open(label_path) as f:
             jsondata = json.loads(f.readline())
         self.label = jsondata['content']
+
+    def adjust(self,frame):
+        if self.frame_num < frame:
+            pose = self.pose_list[-1]
+            for i in range(0, frame - self.frame_num):
+                self.pose_list.append(pose)
+            self.frame_num = frame
+
+
 
     
 
@@ -81,8 +92,8 @@ class BandaiDataset(Dataset):
         # count the number of files as cap frames from vedios
         self.num_of_files = 0
         for filename in self.filelist:
-            motion = Motion()
-            self.motion_list.append(motion.cap_frames(self.video_dir,self.json_dir,filename))
+            motion = Motion().cap_frames(self.video_dir,self.json_dir,filename)
+            self.motion_list.append(motion)
             self.num_of_files += 1
 
     
@@ -102,6 +113,15 @@ class BandaiDataset(Dataset):
                 self.filelist = content[0].split('\n')
         
         return self.filelist
+    
+    def normalize(self):
+        max_frame = -1
+        for motion in self.motion_list:
+            max_frame = max(motion.frame_number,max_frame)
+        
+        for i in range(0,self.motion_list):
+            motion.adjust(max_frame)
+            
         
 
 
