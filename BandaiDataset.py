@@ -4,23 +4,26 @@ import cv2 as cv
 import numpy as np
 import pandas as pd
 import json
+import copy
 from matplotlib import pyplot as plt
 import torchvision.transforms as transforms
 from torch.utils.data import Dataset
 
 class Motion:
-    pose_list = []
-    label = -1
-    frame_num = -1
+
 
     def __init__(self):
-        pass
+        self.pose_list = []
+        self.label = -1
+        self.frame_num = 0
 
     # aquire pose images from vedio using OpenCV
     def cap_frames(self,video_dir,json_dir,filename):
         
-        if filename!='':
-            self.read_label(json_dir+filename+".json")
+        if filename == '':
+            return False
+            
+        self.read_label(json_dir+filename+".json")
 
         cap = cv.VideoCapture(video_dir + filename +'.mp4')
         self.pose_list = []
@@ -32,11 +35,11 @@ class Motion:
                 break
             img = cv.cvtColor(frame, cv.COLOR_BGR2GRAY)
             self.pose_list.append(img)
+            self.frame_num += 1
             
         cap.release()
-        self.frame_num = len(self.pose_list)
 
-        return self
+        return True
     
     # draw certain pose in motion
     def draw_pose(self, i):
@@ -50,12 +53,12 @@ class Motion:
             jsondata = json.loads(f.readline())
         self.label = jsondata['content']
 
-    def adjust(self,frame):
-        if self.frame_num < frame:
-            pose = self.pose_list[-1]
-            for i in range(0, frame - self.frame_num):
+    def adjust(self,max_frame):
+        if self.frame_num < max_frame:
+            pose = self.pose_list.pop()
+            for i in range(0, max_frame - self.frame_num):
                 self.pose_list.append(pose)
-            self.frame_num = frame
+            self.frame_num = max_frame
 
 
 
@@ -67,6 +70,7 @@ class BandaiDataset(Dataset):
     motion_list = []
     label_list = []
     num_of_files = 0
+    max_frame = -1
     video_dir = 'datasets/mp4/'
     json_dir = 'datasets/data/'
     label_dir = 'datasets/cfg/'
@@ -89,12 +93,17 @@ class BandaiDataset(Dataset):
     
     def load(self):
         self.get_filenames(self.list_file)
+
         # count the number of files as cap frames from vedios
         self.num_of_files = 0
+
         for filename in self.filelist:
-            motion = Motion().cap_frames(self.video_dir,self.json_dir,filename)
-            self.motion_list.append(motion)
-            self.num_of_files += 1
+            motion = Motion()
+            flag = motion.cap_frames(self.video_dir,self.json_dir,filename)
+            if flag:
+                self.motion_list.append(copy.deepcopy(motion))
+                print(self.motion_list[-1].frame_num)
+                self.num_of_files += 1
 
     
     def get_filenames(self, filepath=''):
@@ -117,10 +126,10 @@ class BandaiDataset(Dataset):
     def normalize(self):
         max_frame = -1
         for motion in self.motion_list:
-            max_frame = max(motion.frame_number,max_frame)
+            max_frame = max(motion.frame_num,max_frame)
         
-        for i in range(0,self.motion_list):
-            motion.adjust(max_frame)
+        for i in range(0,len(self.motion_list)):
+            self.motion_list[i].adjust(max_frame)
             
         
 
