@@ -12,24 +12,32 @@ from torch.utils.data import Dataset
 class BandaiDataset(Dataset):
     
     filelist = []
+    motion_list = []
+    num_of_files = 0
     video_dir = 'datasets/mp4/'
     json_dir = 'datasets/data/'
     label_dir = 'datasets/cfg/'
     list_file = 'datafiles.txt'
 
-    # 定义可以扩写：可以改变地址
     def __init__(self, filepath):
         super().__init__()
+
+        # get all vedio filename
         with open(filepath,'r') as file:
             line = file.readline()
             self.filelist = line.split(',')
-
-
+        
+        # count the number of files as cap frames from vedios
+        self.num_of_files = 0
+        for filename in self.filelist:
+            self.motion_list.append(self.cap_frames(filename))
+            self.num_of_files += 1
+                                    
     def __len__(self):
-        return len(self.filelist)
+        return self.num_of_files
     
     def __getitem__(self, i):
-        return self.filelist.iloc[i]
+        return self.motion_list[i]
         
     def cap_frames(self,filename):
 
@@ -47,8 +55,5 @@ class BandaiDataset(Dataset):
         cap.release()
         return motion
 
-
-    def load_data(list_file):
-        BandaiDataset.get_filelist(list_file) 
         
         
