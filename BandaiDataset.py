@@ -13,6 +13,7 @@ class BandaiDataset(Dataset):
     
     filelist = []
     motion_list = []
+    label_list = []
     num_of_files = 0
     video_dir = 'datasets/mp4/'
     json_dir = 'datasets/data/'
@@ -31,6 +32,7 @@ class BandaiDataset(Dataset):
         self.num_of_files = 0
         for filename in self.filelist:
             self.motion_list.append(self.cap_frames(filename))
+            self.label_list.append(pd.read_json(self.json_dir+filename))
             self.num_of_files += 1
                                     
     def __len__(self):
