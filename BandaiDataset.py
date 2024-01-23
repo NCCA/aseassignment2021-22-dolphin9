@@ -20,19 +20,18 @@ class BandaiDataset(Dataset):
     label_dir = 'datasets/cfg/'
     list_file = 'datafiles.txt'
 
-    def __init__(self, filepath):
+    def __init__(self, filepath = ''):
         super().__init__()
 
-        # get all vedio filename
-        with open(filepath,'r') as file:
-            line = file.readline()
-            self.filelist = line.split(',')
+        if filepath == '':
+            filepath = self.list_file
         
+        self.get_filenames()
         # count the number of files as cap frames from vedios
         self.num_of_files = 0
         for filename in self.filelist:
             self.motion_list.append(self.cap_frames(filename))
-            self.label_list.append(pd.read_json(self.json_dir+filename))
+            #self.label_list.append(pd.read_json(self.json_dir+filename))
             self.num_of_files += 1
                                     
     def __len__(self):
@@ -40,6 +39,19 @@ class BandaiDataset(Dataset):
     
     def __getitem__(self, i):
         return self.motion_list[i]
+    
+    def get_filenames(self, filepath=''):
+        if filepath == '':
+            filepath = self.list_file
+
+        if self.filelist == []:
+            # get all vedio filename
+            with open(filepath,'r') as file:
+                line = file.readline()
+                self.filelist = line.split(',')
+        
+        return self.filelist
+        
         
     def cap_frames(self,filename):
 
@@ -49,7 +61,7 @@ class BandaiDataset(Dataset):
         while cap.isOpened():
             ret, frame = cap.read()
             if not ret:
-                print("Can't receive frame (stream end?). Exiting ...")
+                print(filename + ": stream end")
                 break
             img = cv.cvtColor(frame, cv.COLOR_BGR2GRAY)
             motion.append(img)
