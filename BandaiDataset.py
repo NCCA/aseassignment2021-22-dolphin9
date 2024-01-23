@@ -1,4 +1,3 @@
-
 import os
 import torch
 import cv2 as cv
@@ -14,6 +13,7 @@ class Motion:
     def __init__(self):
         pass
 
+    # aquire pose images from vedio using OpenCV
     def cap_frames(self,video_dir,filename):
 
         cap = cv.VideoCapture(video_dir + filename +'.mp4')
@@ -30,8 +30,12 @@ class Motion:
         cap.release()
         return self
     
+    # draw certain pose in motion
     def draw_pose(self, i):
         plt.imshow(self.pose_list[i],cmap='gray')
+
+    def get_pose(self, i):
+        return self.pose_list[i]
     
 
 
