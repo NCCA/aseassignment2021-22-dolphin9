@@ -5,3 +5,4 @@ blender/*
 Blender/*
 AlphaPose/*
 .conda/*
+__pycache__/*
