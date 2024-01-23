@@ -3,18 +3,23 @@ import torch
 import cv2 as cv
 import numpy as np
 import pandas as pd
+import json
 from matplotlib import pyplot as plt
 import torchvision.transforms as transforms
 from torch.utils.data import Dataset
 
 class Motion:
     pose_list = []
+    label = -1
 
     def __init__(self):
         pass
 
     # aquire pose images from vedio using OpenCV
-    def cap_frames(self,video_dir,filename):
+    def cap_frames(self,video_dir,json_dir,filename):
+        
+        if filename!='':
+            self.read_label(json_dir+filename+".json")
 
         cap = cv.VideoCapture(video_dir + filename +'.mp4')
         self.pose_list = []
@@ -28,6 +33,7 @@ class Motion:
             self.pose_list.append(img)
             
         cap.release()
+
         return self
     
     # draw certain pose in motion
@@ -37,9 +43,12 @@ class Motion:
     def get_pose(self, i):
         return self.pose_list[i]
     
+    def read_label(self,label_path):
+        with open(label_path) as f:
+            jsondata = json.loads(f.readline())
+        self.label = jsondata['content']
 
-
-
+    
 
 class BandaiDataset(Dataset):
     
@@ -73,8 +82,7 @@ class BandaiDataset(Dataset):
         self.num_of_files = 0
         for filename in self.filelist:
             motion = Motion()
-            self.motion_list.append(motion.cap_frames(self.video_dir,filename))
-            #self.label_list.append(pd.read_json(self.json_dir+filename))
+            self.motion_list.append(motion.cap_frames(self.video_dir,self.json_dir,filename))
             self.num_of_files += 1
 
     
@@ -84,9 +92,14 @@ class BandaiDataset(Dataset):
 
         if self.filelist == []:
             # get all vedio filename
+            content = []
             with open(filepath,'r') as file:
-                line = file.readline()
-                self.filelist = line.split(',')
+                
+                line = file.read()
+                while line:
+                    content.append(line)
+                    line = file.read()
+                self.filelist = content[0].split('\n')
         
         return self.filelist
         
