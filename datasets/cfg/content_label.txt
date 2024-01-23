@@ -8,10 +8,4 @@ dataset-1_bow
 dataset-1_bye
 dataset-1_guide
 dataset-1_byebye
-dataset-1_respond
-dataset-1_call
-dataset-1_punch
-dataset-1_kick
-dataset-1_slash
-dataset-1_dance-long
-dataset-1_dance-short
+

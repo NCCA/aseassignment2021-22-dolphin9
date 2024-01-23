@@ -55,7 +55,7 @@ class Motion:
 
     def adjust(self,max_frame):
         if self.frame_num < max_frame:
-            pose = self.pose_list.pop()
+            pose = self.pose_list[-1]
             for i in range(0, max_frame - self.frame_num):
                 self.pose_list.append(pose)
             self.frame_num = max_frame
@@ -106,12 +106,15 @@ class BandaiDataset(Dataset):
             if flag:
                 self.motion_list.append(copy.deepcopy(motion))
                 print(self.motion_list[-1].frame_num)
+                self.num_of_files += 1
                 
 
     
     def get_filenames(self, filepath=''):
         if filepath == '':
             filepath = self.list_file
+        else:
+            self.filelist = []
 
         if self.filelist == []:
             # get all vedio filename

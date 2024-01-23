@@ -43,10 +43,6 @@ dataset-1_bye_old_001
 dataset-1_bye_proud_001
 dataset-1_bye_sad_001
 dataset-1_bye_tired_001
-dataset-1_call_normal_001
-dataset-1_call_normal_002
-dataset-1_dance-long_normal_001
-dataset-1_dance-short_normal_001
 dataset-1_dash_active_001
 dataset-1_dash_angry_001
 dataset-1_dash_childish_001
@@ -77,10 +73,6 @@ dataset-1_guide_old_001
 dataset-1_guide_proud_001
 dataset-1_guide_sad_001
 dataset-1_guide_tired_001
-dataset-1_kick_normal_001
-dataset-1_punch_normal_001
-dataset-1_punch_normal_002
-dataset-1_respond_normal_001
 dataset-1_run_active_001
 dataset-1_run_angry_001
 dataset-1_run_childish_001
@@ -96,8 +88,6 @@ dataset-1_run_old_001
 dataset-1_run_proud_001
 dataset-1_run_sad_001
 dataset-1_run_tired_001
-dataset-1_slash_normal_001
-dataset-1_slash_normal_002
 dataset-1_walk-back_active_001
 dataset-1_walk-back_angry_001
 dataset-1_walk-back_childish_001
