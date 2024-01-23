@@ -9,10 +9,16 @@ Done :
 - Change .gitignore
 - find the dataset
 - load data
-----
-To Do :
 - visualize motion data
 - change the dataset to Bandai
+----
+To Do :
+- add unittest
+- cnn for images
+- concatenate the embeddings
+- normalize
+- put normalized embeddings into mlp
+
 ----
 
 Before start, please set the environment by following command:
