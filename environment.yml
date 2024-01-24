@@ -18,3 +18,4 @@ dependencies:
     - pyautogui
     - pydirectinput
     - opencv-python
+    - imageiod
