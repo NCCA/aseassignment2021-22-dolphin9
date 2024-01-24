@@ -8,6 +8,7 @@ import copy
 from matplotlib import pyplot as plt
 import torchvision.transforms as transforms
 from torch.utils.data import Dataset
+from PIL import Image
 
 class Motion:
 
@@ -81,8 +82,10 @@ class Motion:
 
 
     
-    def get_motion_tensor():
-        pass
+    def get_motion_tensor(self):
+        motion = np.array(self.pose_list)
+        motion_tensor = torch.from_numpy(motion)
+        return motion_tensor
 
 
 
