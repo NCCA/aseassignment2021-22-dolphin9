@@ -16,13 +16,14 @@ class Motion:
         self.pose_list = []
         self.label = -1
         self.frame_num = 0
+        
 
     # aquire pose images from vedio using OpenCV
-    def input_motion(self,video_dir,json_dir,filename):
+    def input_motion(self,video_dir,filename, json_dir = '',):
         
         if filename == '':
             return False
-            
+               
         self.read_label(json_dir+filename+".json")
 
         cap = cv.VideoCapture(video_dir + filename +'.mp4')
@@ -53,12 +54,35 @@ class Motion:
             jsondata = json.loads(f.readline())
         self.label = jsondata['content']
 
-    def adjust(self,max_frame):
-        if self.frame_num < max_frame:
-            pose = self.pose_list[-1]
-            for i in range(0, max_frame - self.frame_num):
-                self.pose_list.append(pose)
-            self.frame_num = max_frame
+    ##### here , transfer motions in to same frames.
+    def adjust(self, frame_lenth):  
+        new_pose_list = copy.deepcopy(self.pose_list)
+        less_flag = False
+        if len(new_pose_list)< frame_lenth:
+            new_pose_list.append(self.pose_list)
+            less_flag = True
+            while len(new_pose_list) < frame_lenth:
+                new_pose_list.append(self.pose_list)
+        
+        if len(new_pose_list) > frame_lenth:
+            mid_frame = len(new_pose_list)//2
+            start_frame = mid_frame - (frame_lenth//2)
+            end_frame = start_frame + frame_lenth
+            new_pose_list = copy.deepcopy(new_pose_list[start_frame:end_frame])
+
+        #print(len(new_pose_list))
+        #print(frame_lenth)
+        if frame_lenth == len(new_pose_list):
+            self.pose_list = copy.deepcopy(new_pose_list)
+            self.frame_num = frame_lenth
+        else:
+            print('Err: len(new_pose_lise) is not equal to frame lenth!')
+
+
+
+    
+    def get_motion_tensor():
+        pass
 
 
 
@@ -130,14 +154,14 @@ class BandaiDataset(Dataset):
         
         return self.filelist
     
-    def normalize(self):
+    def preprocessing(self):
         for motion in self.motion_list:
             self.max_frame = max(motion.frame_num,self.max_frame)
             self.min_frame = min(motion.frame_num,self.min_frame)
         
-        for i in range(0,len(self.motion_list)):
-            self.motion_list[i].adjust(self.max_frame)
-            
+        #for i in range(0,len(self.motion_list)):
+        #    self.motion_list[i].adjust(self.max_frame)
+    
         
 
 
