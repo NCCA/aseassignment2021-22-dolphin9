@@ -6,3 +6,8 @@ Blender/*
 AlphaPose/*
 .conda/*
 __pycache__/*
+.github/*
+.gitmodules/*
+temp.png
+test.ipynb
+test.py
