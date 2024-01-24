@@ -6,3 +6,5 @@ Blender/*
 AlphaPose/*
 .conda/*
 __pycache__/*
+.github/*
+.gitmodules/*
