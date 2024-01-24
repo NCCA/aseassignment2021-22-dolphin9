@@ -63,10 +63,10 @@ class Motion:
         new_pose_list = copy.deepcopy(self.pose_list)
         less_flag = False
         if len(new_pose_list)< frame_lenth:
-            new_pose_list.append(self.pose_list)
+            new_pose_list.extend(copy.deepcopy(self.pose_list))
             less_flag = True
             while len(new_pose_list) < frame_lenth:
-                new_pose_list.append(self.pose_list)
+                new_pose_list.extend(copy.deepcopy(self.pose_list))
         
         if len(new_pose_list) > frame_lenth:
             mid_frame = len(new_pose_list)//2
@@ -88,7 +88,9 @@ class Motion:
     def get_motion_tensor(self, set_frame):
         if self.frame_num != set_frame:
             self.adjust(frame_lenth=set_frame)
-            
+
+
+        ######################
         motion = np.array(self.pose_list)
         motion_tensor = torch.from_numpy(motion)
         return motion_tensor
@@ -138,16 +140,14 @@ class BandaiDataset(Dataset):
         self.get_filenames(self.list_file)
 
         # count the number of files as cap frames from vedios
-        self.num_of_files = 0
-
         for filename in self.filelist:
+            #
             motion = Motion()
-            flag = motion.input_motion(self.video_dir,self.json_dir,filename)
+            flag = motion.input_motion(video_dir=self.video_dir,json_dir=self.json_dir,filename=filename)
             if flag:
                 self.motion_list.append(copy.deepcopy(motion))
                 print(self.motion_list[-1].frame_num)
-                self.num_of_files += 1
-                
+            
 
     
     def get_filenames(self, filepath=''):
@@ -165,7 +165,14 @@ class BandaiDataset(Dataset):
                 while line:
                     content.append(line)
                     line = file.read()
-                self.filelist = content[0].split('\n')
+                #temp = content[0].split('\n')
+                self.filelist = list(filter(None,content[0].split('\n')))
+                '''
+                for i in range(0,len(temp)):
+                    print(f'temp[165]={temp[165]}')
+                    if temp[i] != '' or temp[i]!= '\n' or temp[i]!= ' ' :
+                        self.filelist.append(temp[i])
+                '''
                 self.num_of_files = len(self.filelist)
         
         return self.filelist
