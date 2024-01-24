@@ -57,6 +57,9 @@ class Motion:
 
     ##### here , transfer motions in to same frames.
     def adjust(self, frame_lenth):  
+        if len(self.pose_list) == frame_lenth:
+            return
+
         new_pose_list = copy.deepcopy(self.pose_list)
         less_flag = False
         if len(new_pose_list)< frame_lenth:
@@ -82,10 +85,20 @@ class Motion:
 
 
     
-    def get_motion_tensor(self):
+    def get_motion_tensor(self, set_frame):
+        if self.frame_num != set_frame:
+            self.adjust(frame_lenth=set_frame)
+            
         motion = np.array(self.pose_list)
         motion_tensor = torch.from_numpy(motion)
         return motion_tensor
+    
+    def write_vedio(self,filename):
+        fourcc = cv.VideoWriter_fourcc(*'MP4V')
+        out = cv.VideoWriter(filename, fourcc, 20.0, (640,480))
+        for i in range(0,self.frame_num):
+            out.write(self.pose_list[i])
+        out.release()
 
 
 
