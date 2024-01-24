@@ -33,7 +33,7 @@ class Motion:
         while cap.isOpened():
             ret, frame = cap.read()
             if not ret:
-                print(filename + ": stream end")
+                #print(filename + ": stream end")
                 break
             img = cv.cvtColor(frame, cv.COLOR_BGR2GRAY)
             self.pose_list.append(img)
@@ -146,7 +146,7 @@ class BandaiDataset(Dataset):
             flag = motion.input_motion(video_dir=self.video_dir,json_dir=self.json_dir,filename=filename)
             if flag:
                 self.motion_list.append(copy.deepcopy(motion))
-                print(self.motion_list[-1].frame_num)
+                #print(self.motion_list[-1].frame_num)
             
 
     
@@ -165,14 +165,8 @@ class BandaiDataset(Dataset):
                 while line:
                     content.append(line)
                     line = file.read()
-                #temp = content[0].split('\n')
+ 
                 self.filelist = list(filter(None,content[0].split('\n')))
-                '''
-                for i in range(0,len(temp)):
-                    print(f'temp[165]={temp[165]}')
-                    if temp[i] != '' or temp[i]!= '\n' or temp[i]!= ' ' :
-                        self.filelist.append(temp[i])
-                '''
                 self.num_of_files = len(self.filelist)
         
         return self.filelist
