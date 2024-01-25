@@ -1,4 +1,4 @@
-import BandaiDataset as bd
+import Model.BandaiDataset as bd
 import numpy as np
 import torch    
 import torch.nn as nn
@@ -13,7 +13,7 @@ checkpoint_frequency = 3
 learning_rate = 0.00005
 gamma = 0.5
 
-SAVE_DIR = './save_models'
+SAVE_DIR = '../save_models'
 
 DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
