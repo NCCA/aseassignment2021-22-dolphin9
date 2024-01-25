@@ -13,11 +13,6 @@ Motion class is for the motion data, which is the dataframe for BandaiDataset
 
 """
 
-VIDEO_DIR = 'datasets/mp4/'
-JSON_DIR = 'datasets/data/'
-LABEL_DIR = 'datasets/cfg/'
-LIST_FILE = 'datafiles.txt'
-
 
 class Motion:
 
@@ -136,6 +131,13 @@ class BandaiDataset(Dataset):
     max_frame = -1
     min_frame = 10000
 
+    VIDEO_DIR = 'datasets/mp4/'
+    JSON_DIR = 'datasets/data/'
+    LABEL_DIR = 'datasets/cfg/'
+    LIST_FILE = 'datafiles.txt'
+
+
+
 
     def __init__(self, filepath:str = LIST_FILE):
         """
@@ -145,9 +147,9 @@ class BandaiDataset(Dataset):
         super().__init__()
 
         if filepath == '':
-            filepath = LIST_FILE
+            filepath = self.LIST_FILE
         else:
-            LIST_FILE = filepath
+            self.LIST_FILE = filepath
 
         self.get_filenames()
         
@@ -163,10 +165,10 @@ class BandaiDataset(Dataset):
             load data 
         """
 
-        self.get_filenames(LIST_FILE)
+        self.get_filenames(list_file)
         for filename in self.filelist:
             motion = Motion()
-            flag = motion.input_motion(video_dir=self.video_dir,json_dir=self.json_dir,filename=filename)
+            flag = motion.input_motion(video_dir=self.VIDEO_DIR,json_dir=self.JSON_DIR,filename=filename)
             if flag:
                 self.motion_list.append(copy.deepcopy(motion))
             
@@ -174,7 +176,7 @@ class BandaiDataset(Dataset):
     
     def get_filenames(self, filepath:str = LIST_FILE) -> list:
 
-        if filepath == '' or filepath == LIST_FILE:
+        if filepath == '' or filepath == self.LIST_FILE:
             pass
         else:
             self.filelist = []
