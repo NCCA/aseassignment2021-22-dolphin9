@@ -155,7 +155,7 @@ def save_checkpoint(model, epoch, save_dir = SAVE_DIR):
     motion = bd.Motion()
     motion.adjust()
 
-def train_model_final(model, epochs, dataloaders,
+def train_model(model, epochs, dataloaders,
                       optimizer, lr_scheduler, writer,
                       early_stopper,checkpoint_frequency):
     msg = ""
