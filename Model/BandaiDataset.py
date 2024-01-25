@@ -162,7 +162,7 @@ class BandaiDataset(Dataset):
     
     def load(self, list_file:str = LIST_FILE):
         """
-            load data 
+            load data , list_file should be a file with suffix
         """
 
         self.get_filenames(list_file)
