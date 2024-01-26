@@ -34,16 +34,16 @@ Firstly, utilize the Python script provided by Bandai to convert BVH data into M
 And then, check the labels and the corresponding labels for actions, filtering out data classes with fewer items.Before filtering, there were 177 motion data points with 17 content labels. After filtering, there are now 165 motion data points and 10 content labels.
 |origin  | filtered|
 |---|---|
-|dataset-1_walk|remain|
-|dataset-1_run|remain|
-|dataset-1_dash|remain|
-|dataset-1_walk-back|remain|
-|dataset-1_walk-left|remain|
-|dataset-1_walk-right|remain|
-|dataset-1_bow|remain|
-|dataset-1_bye|remain|
-|dataset-1_guide|remain|
-|dataset-1_byebye|remain|
+|dataset-1_walk|retain|
+|dataset-1_run|retain|
+|dataset-1_dash|retain|
+|dataset-1_walk-back|retain|
+|dataset-1_walk-left|retain|
+|dataset-1_walk-right|retain|
+|dataset-1_bow|retain|
+|dataset-1_bye|retain|
+|dataset-1_guide|retain|
+|dataset-1_byebye|retain|
 |dataset-1_respond|remove|
 |dataset-1_call|remove|
 |dataset-1_punch|remove|
