@@ -1,5 +1,13 @@
+import torch
 import torch.nn as nn
 import torchsummary as summary
+
+set_frame = 50
+epochs = 60
+batch_sz = 10
+checkpoint_frequency = 3
+learning_rate = 0.00005
+gamma = 0.5
 
 class ResBlock(nn.Module):
     def __init__(self, in_channels, out_channels, downsample):
@@ -76,6 +84,48 @@ class ResNet(nn.Module):
         return inp
     
 
+class PlResNet(pl.LightningModule):
+    def __init__(self, in_channels, outputs):
+        super().__init__()
+        # model arch goes here
+        self.model = ResNet(in_channels,ResBlock,outputs)
+        
+    def forward(self, inp):
+        return self.model.forward(inp)
+    
+    def configure_optimizers(self):
+        return SGD(self.parameters(), lr = learning_rate)
+    
+    def training_step(self, batch, batch_idx):
+        image_batch,label_batch = batch
+        batch_sz = len(image_batch)
+        
+        image_batch = image_batch.reshape(batch_sz,1,28,28)
+        output = model(image_batch)
+        loss = nn.CrossEntropyLoss()(output,label_batch)
+
+        preds_train = torch.argmax(output, dim=1)
+        correct_train = int(torch.eq(preds_train, label_batch).sum())
+        minibatch_accuracy_train = 100 * correct_train / batch_sz
+
+        self.log("train_acc",minibatch_accuracy_train)
+        self.log("train_loss",loss)
+
+    def validation_step(self, batch, batch_idx):
+        image_batch,label_batch = batch
+        batch_sz = len(image_batch)
+        
+        image_batch = image_batch.reshape(batch_sz,1,28,28)
+        output = model(image_batch)
+        loss = nn.CrossEntropyLoss()(output,label_batch)
+
+        preds_val = torch.argmax(output, dim=1)
+        correct_val = int(torch.eq(preds_val, label_batch).sum())
+        minibatch_accuracy_val = 100 * correct_val / batch_sz
+
+        self.log("val_acc",minibatch_accuracy_val)
+        self.log("val_loss",loss)
+
 # convenience function
 def get_resnet():
     return ResNet(1, ResBlock, outputs=10)
@@ -83,3 +133,4 @@ def get_resnet():
 
 # Print model summary
 summary(get_resnet(), input_size=(1, 28, 28), device="cpu")
+

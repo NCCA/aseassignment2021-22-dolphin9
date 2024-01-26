@@ -1,6 +1,7 @@
 import Model.BandaiDataset as bd
 import numpy as np
 import torch    
+import torch.nn as nn
 from torchsummary import summary
 import multiprocessing as mp
 from torchsummary import summary
