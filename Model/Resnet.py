@@ -1,6 +1,7 @@
 import torch
 import torch.nn as nn
 import torchsummary as summary
+from torch.optim import SGD
 
 set_frame = 50
 epochs = 60
@@ -36,7 +37,7 @@ class ResBlock(nn.Module):
 
 
 class ResNet(nn.Module):
-    def __init__(self, in_channels, resblock, outputs):
+    def __init__(self,  resblock, in_channels = set_frame, outputs=10):
         super().__init__()
         self.layer0_conv = nn.Conv2d(in_channels, 64, kernel_size=7, stride=2, padding=3)
         self.layer0_pool = nn.MaxPool2d(kernel_size=3, stride=2, padding=1)
@@ -83,7 +84,7 @@ class ResNet(nn.Module):
 
         return inp
     
-
+'''
 class PlResNet(pl.LightningModule):
     def __init__(self, in_channels, outputs):
         super().__init__()
@@ -127,10 +128,7 @@ class PlResNet(pl.LightningModule):
         self.log("val_loss",loss)
 
 # convenience function
-def get_resnet():
-    return ResNet(1, ResBlock, outputs=10)
-
 
 # Print model summary
 summary(get_resnet(), input_size=(1, 28, 28), device="cpu")
-
+'''

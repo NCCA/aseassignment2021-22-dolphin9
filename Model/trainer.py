@@ -7,11 +7,12 @@ import multiprocessing as mp
 from torchsummary import summary
 from torch.utils.data import DataLoader, random_split
 
-import mymodel
+import Model.mymodel as mymodel
+import Model.Resnet as Resnet
 
 set_frame = 50
 epochs = 60
-batch_sz = 10
+batch_sz = 8
 checkpoint_frequency = 3
 learning_rate = 0.00005
 gamma = 0.5
@@ -41,8 +42,14 @@ class EarlyStopper:
 
 def get_simple_conv_net():
     model = mymodel.ConvNet()
-    summary(model, input_size=(50, 640, 480), device="cpu")
+    summary(model, input_size=(50, 640, 480), device='CPU')
     return model
+
+def get_resnet():
+    model = Resnet.ResNet(Resnet.ResBlock, 50, outputs=10)
+    summary(model, input_size=(50,640,480),device='CPU')
+    return model
+
 
 def custom_collate_fn(batch):
     motion_batch_tensor = torch.FloatTensor(len(batch),50,480,640)
@@ -102,7 +109,7 @@ def save_checkpoint(model, epoch, save_dir = SAVE_DIR):
     torch.save(model.state_dict(), save_path)
 
     motion = bd.Motion()
-    motion.adjust()
+    motion.adjust(set_frame)
 
 def train_model(model, epochs, dataloaders,
                       optimizer, lr_scheduler, writer,
@@ -135,7 +142,7 @@ def train_model(model, epochs, dataloaders,
             minibatch_accuracy_train = 100 * correct_train / total_train
 
             #### Fancy printing stuff, you can ignore this! ######
-            if (batch_num + 1) % 5 == 0:
+            if (batch_num + 1) % 4 == 0:
                 print(" " * len(msg), end='\r')
                 msg = f'Train epoch[{epoch+1}/{epochs}], MiniBatch[{batch_num + 1}/{total_steps_train}], Loss: {loss_train.item():.5f}, Acc: {minibatch_accuracy_train:.5f}, LR: {lr_scheduler.get_last_lr()[0]:.5f}'
                 print (msg, end='\r' if epoch < epochs else "\n",flush=True)
@@ -190,9 +197,50 @@ def train_model(model, epochs, dataloaders,
         writer.add_scalar("Acc/train",epoch_train_acc,epoch)
         writer.add_scalar("Acc/val", epoch_val_acc,epoch)
 
-        if epoch % checkpoint_frequency == 0:
-            save_checkpoint(model, epoch, "./saved_models")
+        #if epoch % checkpoint_frequency == 0:
+            #save_checkpoint(model, epoch, "./saved_models")
         if early_stopper.should_stop(epoch_val_acc):
             print(f"\nValidation accuracy has not improved in {early_stopper.epoch_counter} epochs, stopping.")
-            save_checkpoint(model,epoch,"./saved_models")
+            #save_checkpoint(model,epoch,"./saved_models")
             return
+
+def deployment(last_epoch:int = 57):
+    """
+        return Torch.load(), dataloders
+
+        dataloaders = {
+            'train': train_dl,
+            'val': val_dl,
+            'test': test_dl
+        }
+    """
+    loaded_net_state_dic = torch.load(f"./saved_models/checkout_{last_epoch}.pth")
+    train_dl, val_dl, test_dl = load_data()
+    dataloaders = {
+    'train': train_dl,
+    'val': val_dl,
+    'test': test_dl
+    }
+    return loaded_net_state_dic, dataloaders
+
+def test_model(model, dataloaders):
+    model.eval()
+    correct = 0
+    total = 0
+    
+    test_dl = dataloaders['test']
+    total_steps = len(test_dl)
+    msg = ""
+    for batch_num, (motion_batch, label_batch) in enumerate(test_dl):
+        batch_sz = len(motion_batch)
+        label_batch = label_batch.to(DEVICE)
+        motion_batch = motion_batch.to(DEVICE)
+        out = model(motion_batch)
+        preds = torch.argmax(out, dim=1)
+        correct += int(torch.eq(preds, label_batch).sum())
+        total += label_batch.shape[0]
+        if (batch_num + 1) % 5 == 0:
+            print(" " * len(msg), end='\r')
+            msg = f'Testing batch[{batch_num + 1}/{total_steps}]'
+            print (msg, end='\r' if batch_num < total_steps else "\n", flush=True)
+    print(f"\nFinal test accuracy for {total} examples: {100 * correct/total:.5f}")
