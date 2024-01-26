@@ -5,7 +5,7 @@ blender/*
 saved_models/*
 saved_models*/*
 Blender/*
-*__pycache__*
+Model/__pycache__*
 AlphaPose/*
 *.mp4
 .conda/*
