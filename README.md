@@ -63,7 +63,7 @@ However, due to the different data types in this project compared to the course,
 ## 5. Results
 These are the training results displayed on TensorBoard.
 
-<img src = "img/Tensorboard.png",width = "30%"/>
+<img src = "img/Tensorboard.png" />
 
 ## 6. Discussion & Conclustion
 
