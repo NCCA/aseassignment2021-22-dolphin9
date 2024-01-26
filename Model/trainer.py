@@ -11,7 +11,7 @@ import Model.mymodel as mymodel
 import Model.Resnet as Resnet
 
 set_frame = 50
-epochs = 60
+epochs = 6
 batch_sz = 8
 checkpoint_frequency = 3
 learning_rate = 0.00005
@@ -115,6 +115,7 @@ def train_model(model, epochs, dataloaders,
                       optimizer, lr_scheduler, writer,
                       early_stopper,checkpoint_frequency):
     msg = ""
+
     for epoch in range(epochs):
         ################# TRAINING ####################
         model.train()
@@ -169,6 +170,7 @@ def train_model(model, epochs, dataloaders,
 
             with torch.no_grad():
                 output = model(motion_batch)
+                #print(output)
                 loss_val = nn.CrossEntropyLoss()(output, label_batch)
 
                 preds_val = torch.argmax(output, dim = 1)
@@ -202,7 +204,7 @@ def train_model(model, epochs, dataloaders,
         if early_stopper.should_stop(epoch_val_acc):
             print(f"\nValidation accuracy has not improved in {early_stopper.epoch_counter} epochs, stopping.")
             #save_checkpoint(model,epoch,"./saved_models")
-            return
+            return writer
 
 def deployment(last_epoch:int = 57):
     """
