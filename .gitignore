@@ -13,4 +13,6 @@ __pycache__/*
 .github/*
 .gitmodules/*
 runs/*
+datasets/*
+
 
