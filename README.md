@@ -32,7 +32,25 @@ Firstly, utilize the Python script provided by Bandai to convert BVH data into M
 ![processing](./img/blender.png)
 
 And then, check the labels and the corresponding labels for actions, filtering out data classes with fewer items.Before filtering, there were 177 motion data points with 17 content labels. After filtering, there are now 165 motion data points and 10 content labels.
-[]
+|origin  | filtered|
+|---|---|
+|dataset-1_walk|remain|
+|dataset-1_run|remain|
+|dataset-1_dash|remain|
+|dataset-1_walk-back|remain|
+|dataset-1_walk-left|remain|
+|dataset-1_walk-right|remain|
+|dataset-1_bow|remain|
+|dataset-1_bye|remain|
+|dataset-1_guide|remain|
+|dataset-1_byebye|remain|
+|dataset-1_respond|remove|
+|dataset-1_call|remove|
+|dataset-1_punch|remove|
+|dataset-1_kick|remove|
+|dataset-1_slash|remove|
+|dataset-1_dance-long|remove|
+|dataset-1_dance-short|remove|
 
 ### 2.3 BandaiDataset Class
 
@@ -66,7 +84,7 @@ However, due to the different data types in this project compared to the course,
 These are the training results displayed on TensorBoard.
 
 ![accuracy](./img/Tensorboard_accuracy.png)
-![loss](./img/Tensorboard_loss.png)
+
 
 
 
