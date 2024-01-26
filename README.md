@@ -30,19 +30,15 @@ BandaiDataset inherits from torch.utils.data.Dataset.The two necessary functions
 
 'Motion' class is defined for storing motiondata,In this class.
 
-'input_motion' function uses OpenCV to input MP3 data. This data is stored as a list of pictures. This data is stored as a list of grayscale images named ```pose_list[]```. To show the image using plt, just simply use ```draw_pose``` function in the class
+'input_motion' function uses OpenCV to input MP3 data. This data is stored as a list of pictures. This data is stored as a list of grayscale images named ```pose_list[]```. To show the image using plt, just simply use ```draw_pose()``` function in the class
 
-In order to adapt to the model training, the function ```adjust``` works to process ```pose_list``` of different lengths into the same number of frames.
+In order to adapt to the model training, the function ```adjust(set_frame: int)``` works to process ```pose_list[]``` of different lengths into the same number of frames. For motion data with a frame count originally more or less than the specified frame count, adjust adopts two different approaches to handle the situation.For data with __fewer__ frames, ```adjust``` adopts the approach of __duplicating the entire sequence__ to extend the motion to the specified frame count.For data with __more__ frames, ```adjust``` __truncates the middle part__ of the motion data. This is because, it was found that, for the majority of data in this dataset, the middle part is the most representative. In this project, ```set_frame = 50```  .
 
-
-```
-
-```
-
-
-
+```get_motion_tensor``` is the function to generate ```Torch.tensor``` from ```pose_list``` . Any data intended to enter the model should be of this type.
 
 ## 3. Models
+
+
 
 ## 4. Train
 
