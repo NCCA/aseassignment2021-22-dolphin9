@@ -49,7 +49,9 @@ In order to adapt to the model training, the function ```adjust(set_frame: int)`
 ```get_motion_tensor``` is the function to generate ```Torch.tensor``` from ```pose_list``` . Any data intended to enter the model should be of this type.
 
 ## 3. Models
-This project employed two models: one is a custom-designed CNN model, and the other is the ResNet model provided in the course.Because for the ResNet model, my modifications were limited to adapting the input layer to suit the data in this project, so there is not much to elaborate on here. As for the CNN model,Its structure diagram is as follows:
+This project employed two models: one is a custom-designed CNN model, and the other is the ResNet model provided in the course.Because for the ResNet model, my modifications were limited to adapting the input layer to suit the data in this project, so there is not much to elaborate on here. 
+
+As for the CNN model,Its structure diagram is as follows:
 []
 
 In the convolutional layers, we retain the frame count and only apply convolutional processing to the images.
@@ -65,6 +67,8 @@ These are the training results displayed on TensorBoard.
 
 ![accuracy](./img/Tensorbord_accuracy.png)
 ![loss](./img/Tensorboard_loss.png)
+
+
 
 ## 6. Conclustion
 
