@@ -60,12 +60,13 @@ All crucial training functions are stored in ```Model/trainer.py``` . This inclu
 However, due to the different data types in this project compared to the course, ```custom_collate_fn()``` has been slightly modified to adapt to the dataset in this project. As the ```Motion``` class in ```Model/BandaiDataset.py``` provides the ```get_motion_tensor``` method, everything becomes much more straightforward.
 
 
-## 5. Results
+## 5. Results & Discussion 
 These are the training results displayed on TensorBoard.
 
-<img src = "img/Tensorboard.png" />
+![accuracy](./img/Tensorbord_accuracy.png)
+![loss](./img/Tensorboard_loss.png)
 
-## 6. Discussion & Conclustion
+## 6. Conclustion
 
 
 This project is an assignment for software engineering; thus, the focus is primarily on implementing a complete AI training workflow by using a series of tools like PyTorch. In addition to achieving good training results, I have made efforts to ensure that my program possesses good scalability.
