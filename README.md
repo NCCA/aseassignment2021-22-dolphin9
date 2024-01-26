@@ -29,7 +29,7 @@ A typical BVH data consists of two parts: the skeleton structure and the tempora
 ### 2.2 Data preprocessing
 Firstly, utilize the Python script provided by Bandai to convert BVH data into MP4 video data using Blender.
 
-[]
+![processing](./img/blender.png)
 
 And then, check the labels and the corresponding labels for actions, filtering out data classes with fewer items.Before filtering, there were 177 motion data points with 17 content labels. After filtering, there are now 165 motion data points and 10 content labels.
 []
@@ -65,7 +65,7 @@ However, due to the different data types in this project compared to the course,
 ## 5. Results & Discussion 
 These are the training results displayed on TensorBoard.
 
-![accuracy](./img/Tensorbord_accuracy.png)
+![accuracy](./img/Tensorboard_accuracy.png)
 ![loss](./img/Tensorboard_loss.png)
 
 
