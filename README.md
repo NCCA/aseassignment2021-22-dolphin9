@@ -58,9 +58,7 @@ And then, check the labels and the corresponding labels for actions, filtering o
 
 ### 2.4 Motion Class
 
-```Motion``` class is defined for storing motiondata,In this class.
-
-'input_motion' function uses OpenCV to input MP3 data. This data is stored as a list of pictures. This data is stored as a list of grayscale images named ```pose_list[]```. To show the image using plt, just simply use ```draw_pose()``` function in the class
+```Motion``` class is defined for storing motiondata, In this class, ```input_motion``` function uses OpenCV to input MP3 data. This data is stored as a list of pictures. This data is stored as a list of grayscale images named ```pose_list[]```. To show the image using plt, just simply use ```draw_pose()``` function in the class
 
 In order to adapt to the model training, the function ```adjust(set_frame: int)``` works to process ```pose_list[]``` of different lengths into the same number of frames. For motion data with a frame count originally more or less than the specified frame count, adjust adopts two different approaches to handle the situation.For data with __fewer__ frames, ```adjust``` adopts the approach of __duplicating the entire sequence__ to extend the motion to the specified frame count.For data with __more__ frames, ```adjust``` __truncates the middle part__ of the motion data. This is because, it was found that, for the majority of data in this dataset, the middle part is the most representative. In this project, ```set_frame = 50```  .
 
@@ -95,3 +93,6 @@ This project is an assignment for software engineering; thus, the focus is prima
 
 
 ## Reference
+[1] [Bandai-Namco-Research-Motiondataset](https://github.com/BandaiNamcoResearchInc/Bandai-Namco-Research-Motiondataset)
+
+[2] [SEM Course](https://github.com/jayathungek/sem-deeplearning)
